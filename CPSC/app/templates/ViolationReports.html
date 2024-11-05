@@ -1,0 +1,78 @@
+{% extends 'layouts/base2.html' %}
+{% block content %}
+
+
+<style>
+    .graph-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        margin: 20px 0;
+    }
+    .graph {
+        flex: 1 1 45%;
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid gray; /* Changed border color to gray */
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .large-graph {
+        flex: 1 1 100%;
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid gray; /* Changed border color to gray */
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        height: 600px; /* Adjust height as needed */
+    }
+    iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+</style>
+
+<div class="container">
+    
+    <div class="block-heading d-flex justify-content-between align-items-center">
+        
+        <div>
+            <h1 class="fw-bold mb-2" >Violation Analysis Reports</h1>
+            <a href="/welcome" style="color: black; text-decoration: none;">All > </a>
+            <a href="/highpriority"  style="color: black; text-decoration: none;">High Priority Table > </a>
+            <a href="/reports" class="fw-bold" style="color: black; text-decoration: none;">Reports</a>
+        </div>
+        <div>
+            <button onclick="window.location.href = 'highpriority';" class="btn btn-primary me-2">View Table</button>
+            <button  onclick="window.location.href = 'addhighpriority';"class="btn btn-primary" >+ Add High Priority Recall</button>
+        </div>
+    </div>
+
+<div class="graph-container">
+    <div class="graph" id="kf-embed-container-dbf27f159233a9b4083efd248b5157b6"></div>
+    <script type="text/javascript" src="https://embed.klipfolio.com/a/js/embed.api"></script>
+    <script type="text/javascript">
+    KF.embed.embedKlip({
+       profile : "dbf27f159233a9b4083efd248b5157b6",
+       settings : {"width":"60%","theme":"light","borderStyle":"round","borderColor":"gray"}, /* Changed border color to gray */
+       title : "High and Low Priority Recalls based on Recall Reasoning (Over a Month)"
+    });
+    </script>
+
+    <div class="graph" id="kf-embed-container-8073108d568c9abafccdadee2ccd821a"></div>
+    <script type="text/javascript" src="https://embed.klipfolio.com/a/js/embed.api"></script>
+    <script type="text/javascript">
+    KF.embed.embedKlip({
+       profile : "8073108d568c9abafccdadee2ccd821a",
+       settings : {"width":"40%","theme":"light","borderStyle":"round","borderColor":"gray"}, /* Changed border color to gray */
+       title : "High and Low Priority Recalls Overview (Over a Month)"
+    });
+    </script>
+</div>
+
+<div class="large-graph">
+    <iframe title="Riya_PowerBI (1)" src="https://app.powerbi.com/view?r=eyJrIjoiNzE0MTM5NTgtYzk0OC00ZGMyLThlODMtMzFmZmI4MDVmYzU4IiwidCI6IjYwOTU2ODg0LTEwYWQtNDBmYS04NjNkLTRmMzJjMWUzYTM3YSIsImMiOjF9" allowFullScreen="true"></iframe>
+</div>
+</div>
+{% endblock content %}

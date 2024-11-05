@@ -55,7 +55,7 @@ def login():
         else:
             for user in find_user:
                  session['user'] = user
-                 return render_template('Welcome.html', find_user=find_user)
+                 return render_template('WelcomeManager.html', find_user=find_user)
             # else:
             #     # If the user is not found in the fetched rows, display an error message
             #     flash('We could not find your account. Please try again')
@@ -77,7 +77,7 @@ def login():
         else:
             for user in find_user:
                 session['user'] = user
-                return render_template('Welcome.html', find_user=find_user)
+                return render_template('WelcomeInvestigator.html', find_user=find_user)
             # else:
             #     # If the user is not found in the fetched rows, display an error message
             #     flash('User not found')
@@ -88,9 +88,14 @@ def login():
 
 
 
-@app.route('/welcome')
-def welcome():
-    return render_template('Welcome.html')
+@app.route('/welcomeinvestigator')
+def welcomeinvestigator():
+    return render_template('WelcomeInvestigator.html')
+
+
+@app.route('/welcomemanager')
+def welcomemanager():
+    return render_template('WelcomeManager.html')
 
 @app.route('/reports')
 def reports():
@@ -354,3 +359,19 @@ def searchhigh():
     else:
         flash("No recalls found for the given Recall ID.")
         return render_template('AddHighPriorityTable', recall=recalls)
+
+
+#Sprint 2
+
+
+@app.route('/marketlistings')
+def marketlistings():
+    return render_template('MarketListings.html')
+
+@app.route('/violations')
+def violations():
+    return render_template('Violations.html')
+
+@app.route('/reports2')
+def reports2():
+    return render_template('ViolationReports.html')
