@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>{% block title %} {% endblock title %}</title>
+    <link rel="stylesheet" href="/static/assets//bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i&amp;display=swap">
+    <link rel="stylesheet" href="/static/assets//css/baguetteBox.min.css">
+    <link rel="stylesheet" href="/static/assets//css/vanilla-zoom.min.css">
+</head>
+
+<body>
+    <!-- <nav class="navbar navbar-expand-lg fixed-top bg-body clean-navbar navbar-light">
+       
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="upf">User Profile Management</a></li>
+                    <li class="nav-item"><a class="nav-link" href="pim">Product and Inventory Management</a></li>
+                    <li class="nav-item"><a class="nav-link" href="co">Customer Ordering</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mom">Merchant Order Management</a></li>	
+                    
+                </ul>
+            </div>
+        </div>
+    </nav> -->
+
+    <!-- <nav class="navbar bg-body-tertiary fixed top">
+        <form class="container-fluid">
+            
+          <div class="input-group">
+        
+            <span class="navbar-toggler-icon"></span>
+              
+            <input type="text" class="form-control" placeholder="Search Recall" aria-label="Recall Name" aria-describedby="button-addon2">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
+          </div>
+        </form>
+      </nav> -->
+
+      <!-- <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search Recall" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
+      </nav> -->
+
+      
+    
+      
+    <main class="page landing-page pt-0" style=>
+        {% block content %}
+        
+        {% endblock content %}
+        
+        
+    </main>
+    <!-- <footer class="page-footer" style=>
+        <div class="footer-copyright" style=>
+            <p>© 2024 Copyright Team 4</p>
+        </div>
+    </footer> -->
+    <script src="/static/assets//bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/assets//js/baguetteBox.min.js"></script>
+    <script src="/static/assets//js/vanilla-zoom.js"></script>
+    <script src="/static/assets//js/theme.js"></script>
+</body>
+
+</html>

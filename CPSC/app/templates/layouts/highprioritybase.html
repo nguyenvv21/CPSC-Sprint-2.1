@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>{% block title %} {% endblock title %}</title>
+    <link rel="stylesheet" href="/static/assets//bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i&amp;display=swap">
+    <link rel="stylesheet" href="/static/assets//css/baguetteBox.min.css">
+    <link rel="stylesheet" href="/static/assets//css/vanilla-zoom.min.css">
+</head>
+
+<body>
+    
+      <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="mx-auto">
+              <form class="d-flex" action="/searchhighpriority" method="GET">
+                  <input name="recall_id" id="searchRecall2" class="form-control me-2" type="search" 
+                         placeholder="Search Recall" aria-label="Search">
+                  <button class="btn btn-outline-success" type="submit">Search</button>
+              </form>
+          </div>
+        </div>
+    </nav>
+    
+      
+    <main class="page landing-page pt-0" style=>
+        {% block content %}
+        
+        {% endblock content %}
+        
+        
+    </main>
+    <!-- <footer class="page-footer" style=>
+        <div class="footer-copyright" style=>
+            <p>© 2024 Copyright Team 4</p>
+        </div>
+    </footer> -->
+    <script src="/static/assets//bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/assets//js/baguetteBox.min.js"></script>
+    <script src="/static/assets//js/vanilla-zoom.js"></script>
+    <script src="/static/assets//js/theme.js"></script>
+</body>
+<script>
+  document.getElementById('searchRecall2').addEventListener('keyup', function(e) {
+      const searchValue = this.value.toLowerCase();
+      const table = document.querySelector('#recallTable'); // Add this ID to your table
+      const rows = table.getElementsByTagName('tr');
+  
+      for (let i = 1; i < rows.length; i++) { // Start from 1 to skip header
+          const recallId = rows[i].getElementsByTagName('td')[0].textContent.toLowerCase(); // Assuming Recall ID is first column
+          if (recallId.includes(searchValue)) {
+              rows[i].style.display = '';
+          } else {
+              rows[i].style.display = 'none';
+          }
+      }
+  });
+  </script>
+</html>
