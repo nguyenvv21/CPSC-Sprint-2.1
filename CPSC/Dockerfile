@@ -1,12 +1,6 @@
 # start by pulling the python image
 FROM python:3.8-alpine
 
-# set working directory
-WORKDIR /app
-
-# copy the requirements file into the Docker image
-COPY requirements.txt /app/requirements.txt
-
 # Install build dependencies and runtime dependencies
 WORKDIR /
 RUN apk add --update --no-cache --virtual .tmp-build-deps \
