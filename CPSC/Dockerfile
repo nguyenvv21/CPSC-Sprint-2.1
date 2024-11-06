@@ -1,6 +1,7 @@
 # start by pulling the python image
 FROM python:3.8-alpine
 
+COPY ./requirements.txt /app/requirements.txt
 # Install build dependencies and runtime dependencies
 WORKDIR /
 RUN apk add --update --no-cache --virtual .tmp-build-deps \
