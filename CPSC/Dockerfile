@@ -8,6 +8,7 @@ WORKDIR /app
 COPY requirements.txt /app/requirements.txt
 
 # Install build dependencies and runtime dependencies
+WORKDIR /
 RUN apk add --update --no-cache --virtual .tmp-build-deps \
     gcc libc-dev linux-headers postgresql-dev \
     && apk add libffi-dev
@@ -16,8 +17,7 @@ RUN apk add --update --no-cache --virtual .tmp-build-deps \
 RUN python -m pip install --no-cache-dir --disable-pip-version-check --requirement /app/requirements.txt
 
 # copy gunicorn config and application files
-COPY gunicorn-cfg.py /app/
-COPY . /app/
+COPY . /
 
 # Remove build dependencies to reduce image size
 RUN apk del .tmp-build-deps
