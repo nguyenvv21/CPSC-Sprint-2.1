@@ -1,75 +1,64 @@
 
-
-{% extends "layouts/highprioritybase.html" %}
-
+{% extends "layouts/base2.html" %}
 
 {% block content %}
-<div class="container">
-  <div class="block-heading d-flex justify-content-between align-items-center">
-    
-    <div>
-      <h1 class="fw-bold mb-2" >Violations</h1>
-      <a href="/welcome" style="color: black; text-decoration: none;">All > </a>
-      <a href="/highpriority" style="color: black; text-decoration: none;">High Priority Table > </a>
-      <a href="/addhighpriority" class="fw-bold" style="color: black; text-decoration: none;">Recall Table: Add to Priority</a>
-    </div>
-  </div>
-        <form method="POST" id="recall-form" action="/next-input">
-            <table class="table table-bordered" >
-            <thead class="table-dark">
-              <tr>
-                <th scope="col"></th>
-                <th scope="col">Recall ID</th>
-                <th scope="col">Product ID</th>
-                <th scope="col">Recall Type</th>
-                <th scope="col">Recall Date and Time</th>
-                
 
-              </tr>
-            </thead>
-            <tbody>
-                <!-- x."" is name in MySQL -->
-                {% for x in Recalls %}
-                    
-                    <tr>
-                        <!-- <td><input class="form-check-input" type="checkbox" name="recalls[]" value="{{ x.RecallID }}" id="CheckBox"></td> -->
-                        <td>
-                          <input type="checkbox" name="recalls[]" value="{{ x.RecallID }}" class="form-check-input">
-                        </td>
-                        <td>{{ x.RecallID }}</td>
-                        <td>{{ x.ProductID }}</td> 
-                        <td>{{ x.RecallType }}</td>
-                        <td>{{ x.RecallDateTime }}</td> 
-                    </tr>
-                {% endfor %}
-            </tbody>
-          </table>
-          <div class="col-auto">
-            <button type="button"  id="nextButton"class="btn btn-primary mb-3">Next</button>
-          </div>
-        </form>
-        <!-- onclick="window.location.href = 'addhighpriorityinput';" -->
-</div>
-
-
-
-<script>
-  document.getElementById('nextButton').addEventListener('click', function() {
-      var form = document.getElementById('recall-form');
-      var selectedValues = Array.from(form.querySelectorAll('input[name="recalls[]"]:checked')).map(cb => cb.value);
-      
-      // Store selected values in hidden inputs
-      if (selectedValues.length > 0) {
-          var hiddenInput = document.createElement('input');
-          hiddenInput.type = 'hidden';
-          hiddenInput.name = 'selectedRecalls';
-          hiddenInput.value = JSON.stringify(selectedValues);
-          form.appendChild(hiddenInput);
-          form.submit(); // Proceed to next form
-      } else {
-          alert('Please select at least one recall.');
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+ 
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+  <style>
+      .navbar-custom {
+          background-color: #222d64; /* Replace this with the blue color of your login page */
+          margin-top: 0;
+          padding-top: 0;
       }
-  });
-  </script>
+      .navbar-custom .navbar-brand,
+      .navbar-custom .nav-link {
+          color: #fff;
+      }
+  </style>
+</head>
 
+
+    <div class="container">
+        <div class="block-heading d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="fw-bold mb-2" >Violation Table</h1>
+                <a href="/welcomeinvestigator" style="color: black; text-decoration: none;">All > </a>
+                <a href="/violations" class="fw-bold" style="color: black; text-decoration: none;">Violation Table</a>
+            </div>
+            <br>
+           
+        </div>
+
+        
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                    <tr> 
+                        <th scope="col">Violation ID</th>
+                        <th scope="col">Violation Name</th>
+                        <th scope="col">Violation Found</th>
+                        <th scope="col">Violation Type</th>
+                        <th scope="col">User ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for x in violations %}
+                        <tr>
+                            <td>{{ x.ViolationID }}</td>
+                            <td>{{ x.ViolationName }}</td>
+                            <td>{{ x.ViolationFound }}</td>
+                            <td>{{ x.ViolationType }}</td>
+                            <td>{{ x.UserID }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+        </table>
+
+    
+   
+        
+        
     {% endblock content %}

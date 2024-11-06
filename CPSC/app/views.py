@@ -366,11 +366,77 @@ def searchhigh():
 
 @app.route('/marketlistings')
 def marketlistings():
-    return render_template('MarketListings.html')
+    sql = "select * from MarketListings"
+    cursor.execute(sql)
+    listings= cursor.fetchall()
+    return render_template('MarketListings.html', listings = listings)
+
+@app.route('/addmarketlisting')
+def addmarketlisting():
+    return render_template('AddMarketListing.html')
+
+
+@app.route('/addmarketlistings', methods=['POST', 'GET'])
+def addmarketlistings():
+    marketlistingname = request.form.get('marketlistingname')
+    marketlistingdate = request.form.get('marketlistingdate')
+    url = request.form.get('url')
+    sellername = request.form.get('sellername')
+    selleremail = request.form.get('selleremail')
+    listingID = request.form.get('listingID')
+    #input validation
+    error = False
+
+    if not marketlistingname:
+        error = True
+        flash('Please provide a Market Listing Name.')
+    if not marketlistingdate:
+        error = True
+        flash('Please provide a Market Listing Date.')
+    if not url:
+        error = True
+        flash('Please provide a URL.')
+    if not sellername:
+        error = True
+        flash('Please provide a Seller Name.')
+    if not selleremail:
+        error = True
+        flash('Please provide a Seller Email.')
+    
+    if not error:
+        
+        if not listingID:
+            sql = "insert into MarketListings(ListingName, ListingURL, ListingDateTime) values(%s, %s, %s)"
+            cursor.execute(sql, [marketlistingname, url, marketlistingdate])
+
+            listingID = cursor.lastrowid
+
+            sql = "insert into SellerInfo(SellerName, SellerContact, ListingID) values(%s, %s, %s)"
+            cursor.execute(sql, [sellername, selleremail, listingID])
+            cursor.execute("SELECT * FROM MarketListings")
+            listings = cursor.fetchall()
+            dbConn.commit()
+            flash("New Market Listing has been created.")
+        else:
+            sql = "update MarketListings set ListingName=%s, ListingURL=%s, ListingDateTime=%s where ListingID=%s "
+            cursor.execute(sql, [marketlistingname, url,marketlistingdate, listingID])
+            sql = "insert into SellerInfo(SellerName, SellerContact, ListingID) values(%s, %s, %s)"
+            cursor.execute(sql, [sellername, selleremail, listingID])
+            cursor.execute("SELECT * FROM MarketListings")
+            listings = cursor.fetchall()
+            dbConn.commit()
+            flash("New Market Listing has been successfully updated.")
+        return render_template('MarketListings.html', listings=listings )
+    else:
+        return render_template('AddMarketListing.html', marketlistingname=marketlistingname, marketlistingdate=marketlistingdate, url=url)    
+    
 
 @app.route('/violations')
 def violations():
-    return render_template('Violations.html')
+    sql = "select * from Violations"
+    cursor.execute(sql)
+    violations= cursor.fetchall()
+    return render_template('Violations.html', violations=violations)
 
 @app.route('/reports2')
 def reports2():
