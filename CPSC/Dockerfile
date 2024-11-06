@@ -3,6 +3,8 @@ FROM python:3.8-alpine
 
 # copy the requirements file into the Docker image
 COPY CPSC/requirements.txt /requirements.txt
+
+# new edit that needs to be pushd to the repositry for render
 COPY gunicorn-cfg.py /gunicorn-cfg.py
 
 # switch working directory
