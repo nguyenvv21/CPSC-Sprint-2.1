@@ -20,4 +20,4 @@ RUN apk del .tmp-build-deps
 EXPOSE 5005
 
 # configure the container to run gunicorn
-CMD ["gunicorn", "--config", "/app/gunicorn-cfg.py", "run:app"]
+CMD ["gunicorn", "--config", "gunicorn-cfg.py", "run:app"]
