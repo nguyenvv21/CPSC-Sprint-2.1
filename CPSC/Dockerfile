@@ -9,7 +9,7 @@ RUN apk add --update --no-cache --virtual .tmp-build-deps \
     && apk add libffi-dev
 
 # install the dependencies and packages in the requirements file
-RUN python -m pip install --no-cache-dir --disable-pip-version-check --requirement /app/requirements.txt
+RUN python -m pip install --no-cache-dir --disable-pip-version-check --requirement /requirements.txt
 
 # copy gunicorn config and application files
 COPY . /
