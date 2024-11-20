@@ -14,11 +14,11 @@
 <div class="container" style="position: relative; padding: 20px; width: 40%; height: auto; box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3); background-color: #D3D3D3; margin-left: 25%;">
   <form method="POST" action="{{ url_for('process_update_status') }}">
     <div style="margin-bottom: 20px;">
-      <label for="violationType" style="display: block; margin-bottom: 5px;">Select Violation Type:</label>
-      <select id="violationType" name="violationType" style="border-radius: 5px; height: 40px; width: 100%; max-width: 450px; border-color: #222d64;" required>
+      <label for="status" style="display: block; margin-bottom: 5px;">Select Violation Type:</label>
+      <select id="status" name="status" style="border-radius: 5px; height: 40px; width: 100%; max-width: 450px; border-color: #222d64;" required>
         <option value="">Select a violation type...</option>
-        {% for type in violation_types %}
-        <option value="{{ type.ViolationType }}">{{ type.ViolationType }}</option>
+        {% for type in statuses %}
+        <option value="{{ type.Status }}">{{ type.Status }}</option>
         {% endfor %}
       </select>
     </div>

@@ -457,7 +457,6 @@ def addviolations():
         url = request.form.get('url')
         sellername = request.form.get('sellername')
         selleremail = request.form.get('selleremail')
-        violationtype = request.form.get('violationtype')
         units = request.form.get('units')
         listingID = request.form.get('listingID')
         pname = request.form.get('listingID')
@@ -492,8 +491,8 @@ def addviolations():
                 sql = "insert into SellerInfo(SellerName, SellerContact, ListingID) values(%s, %s, %s)"
                 cursor.execute(sql, [sellername, selleremail, listingID])
                 #violations table
-                sql = "insert into Violations(ViolationName, ViolationFound, ViolationType, ListingID) values(%s, %s, %s, %s)"
-                cursor.execute(sql, [marketlistingname,marketlistingdate ,violationtype, listingID])
+                sql = "insert into Violations(ViolationName, ViolationFound, ListingID) values(%s, %s, %s, %s)"
+                cursor.execute(sql, [marketlistingname,marketlistingdate , listingID])
 
                 cursor.execute("SELECT * FROM MarketListings")
                 listings = cursor.fetchall()
@@ -517,7 +516,7 @@ def addviolations():
             sql = "select * from Products"
             cursor.execute(sql)
             products= cursor.fetchall()
-            return render_template('AddMarketListing.html', marketlistingname=marketlistingname, marketlistingdate=marketlistingdate, url=url, seller = seller, violationtype=violationtype, units=units, products=products)  
+            return render_template('AddMarketListing.html', marketlistingname=marketlistingname, marketlistingdate=marketlistingdate, url=url, seller = seller, units=units, products=products)  
     else:
         sql = "select * from SellerInfo"
         cursor.execute(sql)
@@ -526,7 +525,7 @@ def addviolations():
         sql = "select * from Products"
         cursor.execute(sql)
         products= cursor.fetchall()
-        return render_template('AddMarketListing.html', marketlistingname=marketlistingname, marketlistingdate=marketlistingdate, url=url, seller = seller, violationtype=violationtype, units=units, products=products)
+        return render_template('AddMarketListing.html', marketlistingname=marketlistingname, marketlistingdate=marketlistingdate, url=url, seller = seller, units=units, products=products)
    
     
 
@@ -546,48 +545,49 @@ def updatestatus():
         # Store selected listings in session
         session['selected_listings'] = selected_listings
         
-        # Fetch the existing violation types from the database for the dropdown
-        sql = "SELECT DISTINCT ViolationType FROM Violations"
-        cursor.execute(sql)
-        violation_types = cursor.fetchall()
+        # Fetch the existing statuses from the ListingStatus table for the dropdown
+        sql = "SELECT DISTINCT Status FROM ListingStatus"
+        try:
+            cursor.execute(sql)
+            statuses = cursor.fetchall()
+        except Exception as e:
+            flash(f"Error fetching statuses: {str(e)}")
+            return redirect(url_for('marketlistings'))
         
-        return render_template('UpdateStatus.html', violation_types=violation_types)
+        return render_template('UpdateStatus.html', statuses=statuses)
     
     return redirect(url_for('marketlistings'))
 
+
 @app.route('/update_status', methods=['POST'])
 def process_update_status():
-    violation_type = request.form.get('violationType')
+    status = request.form.get('status')
     selected_listings = session.get('selected_listings', [])
     
-    if selected_listings and violation_type:
+    if selected_listings and status:
         try:
             for listing_id in selected_listings:
-                # Check if a violation record exists for this listing
-                check_sql = "SELECT ViolationID FROM Violations WHERE ListingID = %s"
+                # Check if a status record exists for this listing in ListingStatus
+                check_sql = "SELECT * FROM ListingStatus WHERE ListingID = %s"
                 cursor.execute(check_sql, [listing_id])
-                existing_violation = cursor.fetchone()
+                existing_status = cursor.fetchone()
                 
-                if existing_violation:
-                    # Update existing violation
-                    update_sql = """UPDATE Violations 
-                                  SET ViolationType = %s
-                                  WHERE ListingID = %s"""
-                    cursor.execute(update_sql, [violation_type, listing_id])
+                if existing_status:
+                    # Update existing status
+                    update_sql = "UPDATE ListingStatus SET Status = %s WHERE ListingID = %s"
+                    cursor.execute(update_sql, [status, listing_id])
                 else:
-                    # Create new violation record
-                    insert_sql = """INSERT INTO Violations 
-                                  (ViolationType, ListingID) 
-                                  VALUES (%s, %s)"""
-                    cursor.execute(insert_sql, [violation_type, listing_id])
+                    # Insert new status record
+                    insert_sql = "INSERT INTO ListingStatus (Status, ListingID) VALUES (%s, %s)"
+                    cursor.execute(insert_sql, [status, listing_id])
             
             dbConn.commit()
-            flash('Violation status updated successfully!')
+            flash('Status updated successfully!')
         except Exception as e:
             dbConn.rollback()
-            flash(f'Error updating violation status: {str(e)}')
+            flash(f'Error updating status: {str(e)}')
     else:
-        flash('No listings selected or violation type not specified')
+        flash('No listings selected or status not specified')
     
     # Clear the session
     session.pop('selected_listings', None)
