@@ -1,0 +1,64 @@
+{% extends 'layouts/base2.html' %}
+
+{% block content %}
+
+<div class="block-heading" style="position: relative; padding: 20px; left: 25%; text-align: left;">
+  <h1 class="fw-bold mb-2">Add High Priority Recall</h1>
+  <div>
+    <a href="/welcome" style="color: black; text-decoration: none; margin-right: 10px;">All > </a>
+    <a href="/highpriority" style="color: black; text-decoration: none; margin-right: 10px;">High Priority Table > </a>
+    <a href="/addhighpriority" class="fw-bold" style="color: black; text-decoration: none;">Recall Table: Add to Priority</a>
+  </div>
+</div>
+
+
+
+<div class="container" style="position: relative; padding: 20px; width: 40%; height: auto; box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3); background-color: #D3D3D3; margin-left: 25%;">
+  <form method="POST" action="/addhighpriority1">
+    
+    {% for recall in recalls %}
+    <input type="hidden" name="recallID[]" value="{{ recall }}">
+    {% endfor %}
+
+    <div style="margin-bottom: 20px;">
+      <label for="psd" style="display: block; margin-bottom: 5px;">Priority Start Date</label>
+      <input class="form-input" value="{{ psd }}" type="datetime-local" name="psd"
+      style="border-radius: 5px; height: 40px; width: 100%; max-width: 450px; border-color: #222d64;">
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <label for="ped" style="display: block; margin-bottom: 5px;">Priority End Date</label>
+      <input class="form-input" value="{{ ped }}" type="datetime-local" name="ped"
+      style="border-radius: 5px; height: 40px; width: 100%; max-width: 450px; border-color: #222d64;">
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <label for="reason" style="display: block; margin-bottom: 5px;">Priority Reason</label>
+      <input class="form-input" value="{{ reason }}" type="text" name="reason"
+      style="border-radius: 5px; height: 40px; width: 100%; max-width: 450px; border-color: #222d64;">
+    </div>
+
+    <!-- Submit button positioned outside of the input fields -->
+    <div style="text-align: right;">
+      <button type="submit" class="btn btn-primary" style="background-color: #222d64; color: white;">Add</button>
+    </div>
+
+  </form>
+</div>
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="flash-message"
+  style="position: fixed; bottom: -40px; left: 50%; transform: translateX(-50%); z-index: 999;">
+  <div class="alert alert-info" role="alert">
+    <ul>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endif %}
+{% endwith %}
+
+{% endblock content %}
