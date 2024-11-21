@@ -608,4 +608,5 @@ def outcomes():
 @app.route('/logoutcomes')
 def logoutcomes():
     
+    
     return render_template('LogOutcome.html')
