@@ -1,0 +1,132 @@
+{% extends 'layouts/base2.html' %}
+
+{% block content %}
+
+<div class="block-heading" style="position: relative; padding: 20px; left: 25%; text-align: left;">
+  <h1 class="fw-bold mb-2">Add Violation</h1>
+  <div>
+    <a href="/welcomeinvestigator" style="color: black; text-decoration: none; margin-right: 10px;">All > </a>
+    <a href="/addviolationsload" class="fw-bold" style="color: black; text-decoration: none;">Add Violation</a>
+  </div>
+</div>
+
+
+
+<div class="container" style="position: relative; padding: 20px; width: 40%; height: auto; box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3); background-color: #D3D3D3; margin-left: 25%;">
+  <form method="POST" action="/addviolations" id="recallForm">
+   
+    <!-- Invisible input -->
+  
+
+    <div style="margin-bottom: 20px;">
+      <h3>Listing Information</h3>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <div style="display: flex; align-items: center;">
+        <div style="flex: 1; margin-right: 10px;">
+          <label for="marketlistingnaem" style="display: block; margin-bottom: 5px;">Market Listing Name</label>
+          <input class="form-input" type="text" value="{{ marketlistingname }}" name="marketlistingname"
+            style="border-radius: 5px; height: 40px; width: 100%; border-color: #222d64;" placeholder="Enter Listing Name">
+        </div>
+        <div style="flex: 1;">
+          <label for="marketlistingdate" style="display: block; margin-bottom: 5px;">Market Listing Date</label>
+          <input class="form-input" type="datetime-local" value="{{ marketlistingdate }}" name="marketlistingdate"
+            style="border-radius: 5px; height: 40px; width: 100%; border-color: #222d64;" placeholder="Enter Listing date">
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <label for="url" style="display: block; margin-bottom: 5px;">Market Listing URL</label>
+      <input class="form-input" type="text" value="{{ url }}" name="url"
+        style="border-radius: 5px; height: 40px; width: 100%; max-width: 450px; border-color: #222d64;" placeholder="Enter URL">
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <label for="pname" style="display: block; margin-bottom: 5px;">Product Name</label>
+      <div style="display: flex; align-items: center;">
+        <select class="form-input" value="{{ pname }}" type="text" name="pname"
+          style="border-radius: 5px; height: 40px; width: 100%; max-width: 250px; border-color: #222d64; margin-right: 10px;" placeholder="Select Product Name">
+          <option value="" disabled selected hidden>Please select...</option>
+          {% for product in products %}
+            <option value="{{ product.ProductID }}">{{ product.ProductName }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <label for="units" style="display: block; margin-bottom: 5px;">Units Sold</label>
+      <input class="form-input" type="number" value="{{ units }}" name="units"
+        style="border-radius: 5px; height: 40px; width: 100%; max-width: 450px; border-color: #222d64;" placeholder="Enter Units">
+    </div>
+
+
+    <div style="margin-bottom: 20px;">
+      <h3>Seller Information</h3>
+    </div>
+    
+
+    <div style="margin-bottom: 20px;">
+      <label for="sellername" style="display: block; margin-bottom: 5px;">Seller Name</label>
+      <select id="sellername" class="form-input" name="sellername"
+        style="border-radius: 5px; height: 40px; width: 100%; max-width: 250px; border-color: #222d64; margin-right: 10px;"
+        onchange="checkNewSeller(this)">
+        <option value="" disabled selected hidden>Please select...</option>
+        <option value="new">New Seller</option>
+        {% for seller in seller %}
+          <option value="{{ seller.SellerName }}">{{ seller.SellerName }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div id="newSellerInput" style="display: none; margin-top: 10px;">
+      <label for="newSellerName" style="display: block; margin-bottom: 5px;">New Seller Name</label>
+      <input type="text" id="newSellerName" name="newSellerName" class="form-input"
+        style="border-radius: 5px; height: 40px; width: 100%; max-width: 250px; border-color: #222d64;" placeholder="Enter new seller name">
+    </div>
+    
+    <script>
+      function checkNewSeller(select) {
+        var newSellerInput = document.getElementById('newSellerInput');
+        if (select.value === 'new') {
+          newSellerInput.style.display = 'block';
+        } else {
+          newSellerInput.style.display = 'none';
+        }
+      }
+    </script>
+    
+
+
+    <div style="margin-bottom: 20px;">
+      <label for="selleremail" style="display: block; margin-bottom: 5px;">Seller Email</label>
+      <input class="form-input" type="text" value="{{ selleremail }}" name="selleremail"
+        style="border-radius: 5px; height: 40px; width: 100%; max-width: 450px; border-color: #222d64;" placeholder="Enter Seller Email">
+    </div>
+
+
+    <!-- Submit button positioned outside of the input fields -->
+    <div style="text-align: right;">
+      <button type="submit" class="btn btn-primary" style="background-color: #222d64; color: white;">Add</button>
+    </div>
+
+  </form>
+</div>
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="flash-message"
+  style="position: fixed; bottom: -40px; left: 50%; transform: translateX(-50%); z-index: 999;">
+  <div class="alert alert-info" role="alert">
+    <ul>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endif %}
+{% endwith %}
+
+{% endblock content %}

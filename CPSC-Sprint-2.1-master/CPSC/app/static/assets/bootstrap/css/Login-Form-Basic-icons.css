@@ -1,0 +1,352 @@
+.bs-icon.bs-icon-rounded {
+  border-radius: .5rem;
+}
+
+.bs-icon.bs-icon-circle {
+  border-radius: 50%;
+}
+.navbar.bg-body {
+  background-color: transparent !important;
+}
+
+body {
+  align-items: center;
+  justify-content: center;
+  background-image: url('/static/assets/img/Log In and Sign Up.png');
+  background-size: cover;
+ 
+
+}
+
+.gc004-container {
+  max-width: 500px;
+  height: 450px;
+  background-color: white;
+  padding: 30px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.create-account {
+  width: 50vw;
+  max-width: 60vw;
+  height: 90vh;
+  background-color: white;
+  padding: 30px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+}
+
+.gc004-container nav {
+  position: relative;
+  height: 50px;
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* This is the silver line on the login nav bar*/
+.gc004-container nav::after {
+  content: "";
+  background: silver;
+  width: 90%;
+  height: 1px;
+  bottom: 10px;
+  position: absolute;
+  
+  filter: blur(0.5px);
+}
+
+
+
+/* This is the label for the nav bar slider */
+.gc004-container nav label {
+  position: relative;
+  bottom: 10px;
+  display: block;
+  height: 100%;
+  width: 90%;
+  text-align: center;
+  line-height: 50px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3 ease;
+}
+
+
+input[type='radio'] {
+  display: none;
+}
+
+/* This is the green nav slider*/
+.gc004-container nav .slider {
+  position: absolute;
+  height: 4.5px;
+  background-color: #222d64;
+  border-radius: 20px;
+  width: 45%;
+  z-index: 1;
+  left: 20px;
+  bottom: 8px;
+  transition: all 0.3 ease;
+  filter: blur(0.4px);
+}
+
+/* When merchant is checked, the slider moves by 50%*/
+#merchant:checked ~ nav .slider{
+  left: 50%;
+}
+
+
+#customer:checked ~ nav .customer {
+  color: #222d64;
+}
+
+#merchant:checked ~ nav .merchant {
+  color: #222d64;
+}
+
+
+
+
+section .content {
+  display: none;
+}
+#customer:checked ~ section .customer-login{
+  display: block;
+}
+
+#merchant:checked ~ section .merchant-login{
+  display: block;
+}
+
+
+
+#loginheader {
+  position: absolute;
+  left: 160px;
+  top: 30px;
+  z-index: 1;
+  font-size: 26px;
+ 
+}
+
+#signup-header {
+  position: absolute;
+  left: 95px;
+  top: 40px;
+  font-size: 26px;
+
+  
+}
+#delete-instructions{
+  position: relative;
+  right: 35px;
+
+}
+
+
+#emailbox {
+  position: relative;
+  top: 20px;
+  width: 375px;
+  left: 47px;
+  background-color: rgb(222, 218, 218);
+
+}
+
+#emailbox::placeholder {
+  color: rgb(39, 37, 37);
+}
+
+
+
+
+#passwordbox {
+  position: relative;
+  top: 20px;
+  width: 375px;
+  left: 47px;
+  background-color: rgb(222, 218, 218);
+}
+
+#passwordbox::placeholder {
+  color: rgb(39, 37, 37);
+}
+
+/* Log In Button */
+.gc-signupbtn {
+  display: flex;
+  position: relative;
+  background-color: #222d64;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px auto;
+  border: none;
+  cursor: pointer;
+  opacity: 0.9;
+  top: 20px;
+ 
+  width: 375px;
+  align-items: center;
+  justify-content: center;
+   
+}
+
+.createaccountbtn {
+  display: flex;
+  position: relative;
+  background-color: #222d64;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px auto;
+  border: none;
+  cursor: pointer;
+  opacity: 0.9;
+  top: 60px;
+  right: 113px;
+  width: 225px;
+  
+  align-items: center;
+  justify-content: center;
+   
+}
+
+/*.cancelbtn {
+  display: flex;
+  position: relative;
+  background-color: #e1414c;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px auto;
+  border: none;
+  cursor: pointer;
+  opacity: 0.9;
+ 
+  left: 98px;
+  bottom: 1px;
+  width: 180px;
+  
+  align-items: center;
+  justify-content: center;
+   
+}
+*/
+#create-cancelbtn {
+  display: flex;
+  position: relative;
+  background-color: #e1414c;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px auto;
+  border: none;
+  cursor: pointer;
+  opacity: 0.9;
+ 
+  left: 113px;
+  width: 225px;
+  
+  align-items: center;
+  justify-content: center;
+}
+
+#fname {
+  position: relative;
+  width: 210px;
+  top: 50px;
+ 
+}
+
+#lname {
+  position: relative;
+  width: 210px;
+  top: 50px;
+  left: 25px;
+ 
+}
+
+#signup-email {
+  position: relative;
+  width: 450px;
+  top: 50px;
+  
+}
+
+#signup-phone {
+  position: relative;
+  width: 450px;
+  top: 50px;
+  
+}
+
+#businessname {
+  position: relative;
+  width: 450px;
+  top: 20px;
+  
+}
+
+#website {
+  position: relative;
+  width: 450px;
+  top: 20px;
+  
+}
+
+
+
+#signup-pw {
+  position: relative;
+  width: 450px;
+  top: 50px;
+  
+}
+
+
+
+
+form {
+  height: 700px;
+}
+
+.gc-clearfix {
+  position: relative;
+  top: 300px;
+}
+
+.form-check {
+  position: relative;
+  top: 150px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+#dropdowndelete {
+  position: relative;
+  top: 20px;
+}
+
