@@ -14,28 +14,33 @@
 
 
 <div class="container" style="position: relative; padding: 20px; width: 40%; height: auto; box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3); background-color: #D3D3D3; margin-left: 25%;">
-  <!-- <form method="POST" action="/addRecall" id="recallForm"> -->
+  <form method="POST" action="/logoutcome" id="recallForm">
     
+    <!-- Need to make the response id autofill from violation responses screen -->
     <div style="margin-bottom: 20px;">
         <div style="display: flex; align-items: center;">
           <div style="flex: 1; margin-right: 10px;">
             <label for="recallnumber" style="display: block; margin-bottom: 5px;">Response ID</label>
-            <select class="form-input" value="{{ type }}" type="text" name="type"
-              style="border-radius: 5px; height: 40px; width: 100%; border-color: #222d64;" placeholder="Enter Recall Type">
+
+            {% for responseid in responses %}
+              <input type="text" name="responseid[]" value="{{ responseid }}">
+            {% endfor %}
+            <!-- <select class="form-input" value="{{ responseid }}" type="text" name="responseid"
+              style="border-radius: 5px; height: 40px; width: 100%; border-color: #222d64;" placeholder="">
               <option value="" disabled selected hidden>Please select...</option>
-              <option value="Safety Hazard">Safety Hazard</option>
-              <option value="Fire Hazard">Fire Hazard</option>
-              <option value="Injury Hazard">Injury Hazard</option>
-            </select>
+              {% for x in outcomes %}
+                <option value="{{ responseid }}">{{ x.responseid }}</option>
+              {% endfor %}
+            </select> -->
           </div>
           <div style="flex: 1;">
             <label for="type" style="display: block; margin-bottom: 5px;">Outcome ID</label>
-            <select class="form-input" value="{{ type }}" type="text" name="type"
-              style="border-radius: 5px; height: 40px; width: 100%; border-color: #222d64;" placeholder="Enter Recall Type">
+            <select class="form-input" value="{{ outcomeid }}" type="text" name="outcomeid"
+              style="border-radius: 5px; height: 40px; width: 100%; border-color: #222d64;" placeholder="">
               <option value="" disabled selected hidden>Please select...</option>
-              <option value="Safety Hazard">Safety Hazard</option>
-              <option value="Fire Hazard">Fire Hazard</option>
-              <option value="Injury Hazard">Injury Hazard</option>
+              {% for x in outcomes %}
+                <option value="{{ x.OutcomeID }}">{{ x.OutcomeID }}</option>
+              {% endfor %}
             </select>
           </div>
         </div>
@@ -43,22 +48,22 @@
 
     <div style="margin-bottom: 20px;">
         <label for="pname" style="display: block; margin-bottom: 5px;">Decision</label>
-        <select class="form-input" value="{{ pname }}" type="text" name="pname"
-          style="border-radius: 5px; height: 40px; width: 200%; max-width: 450px; border-color: #222d64; margin-right: 10px;" placeholder="Select Product Name">
+        <select class="form-input" value="{{ decision }}" type="text" name="decision"
+          style="border-radius: 5px; height: 40px; width: 200%; max-width: 450px; border-color: #222d64; margin-right: 10px;" placeholder="">
           <option value="" disabled selected hidden>Please select...</option>
-          {% for product in products %}
-            <option value="{{ product.ProductID }}">{{ product.ProductName }}</option>
+          {% for x in outcomes %}
+            <option value="{{ x.Decision }}">{{ x.Decision }}</option>
           {% endfor %}
         </select>
     </div>
 
     <div style="margin-bottom: 20px;">
         <label for="pname" style="display: block; margin-bottom: 5px;">Investigator Name</label>
-        <select class="form-input" value="{{ pname }}" type="text" name="pname"
-          style="border-radius: 5px; height: 40px; width: 200%; max-width: 450px; border-color: #222d64; margin-right: 10px;" placeholder="Select Product Name">
+        <select class="form-input" value="{{ name }}" type="text" name="name"
+          style="border-radius: 5px; height: 40px; width: 200%; max-width: 450px; border-color: #222d64; margin-right: 10px;" placeholder="">
           <option value="" disabled selected hidden>Please select...</option>
-          {% for product in products %}
-            <option value="{{ product.ProductID }}">{{ product.ProductName }}</option>
+          {% for x in outcomes %}
+            <option value="{{ x.Investigator }}">{{ x.Investigator }}</option>
           {% endfor %}
         </select>
     </div>
@@ -69,7 +74,7 @@
       <button type="submit" class="btn btn-primary" style="background-color: #222d64; color: white;">Add</button>
     </div>
 
-  <!-- </form> -->
+  </form>
 </div>
 
 {% with messages = get_flashed_messages() %}

@@ -1,0 +1,72 @@
+{% extends "layouts/base2.html" %}
+{% block content %}
+
+<div class="container">
+  <div class="block-heading d-flex justify-content-between align-items-center">
+    <div>
+      <h1 class="fw-bold mb-2">Violation Responses</h1>
+      <a href="/welcomeinvestigator" style="color: black; text-decoration: none">All > </a>
+      <a href="/violationresponses" class="fw-bold" style="color: black; text-decoration: none">Manage Outcomes and Responses</a>
+    </div>
+
+    <div class="d-flex align-items-center">
+        <div class="btn-group" role="group" aria-label="Default button group">
+            <button type="button" class="btn btn-outline-primary">Responses</button>
+            <button type="button" class="btn btn-outline-primary" onclick="window.location.href='/letterssent';">Letters Sent</button>
+            <button type="button" class="btn btn-outline-primary" onclick="window.location.href = '/outcomes';">Outcomes</button>
+        </div>
+    </div>
+  </div>
+
+  <form id="responses-form" method="POST" action="/next-logoutcome">
+    <table class="table table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Select</th>
+          <th scope="col">Response ID</th>
+          <th scope="col">Response Text</th>
+          <th scope="col">Letter ID</th>
+          <th scope="col">Response Date Time</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        {% for x in response %}
+            <tr>
+            <td>
+                <input type="checkbox" name="responseid[]" value="{{ x.ResponseID }}" class="form-check-input">
+            </td>
+            <td>{{ x.ResponseID }}</td>
+            <td>{{ x.ResponseText }}</td>
+            <td>{{ x.LetterID }}</td>
+            <td>{{ x.ResponseDateTime }}</td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="col-auto">
+        <button type="button"  id="logoutcome"class="btn btn-primary mb-3">Log Outcome</button>
+    </div>
+  </form>
+</div>
+
+<script>
+    document.getElementById('logoutcome').addEventListener('click', function() {
+        var form = document.getElementById('responses-form');
+        var selectedValues = Array.from(form.querySelectorAll('input[name="responseid[]"]:checked')).map(cb => cb.value);
+        
+        // Store selected values in hidden inputs
+        if (selectedValues.length > 0) {
+            var hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'selectedResponses';
+            hiddenInput.value = JSON.stringify(selectedValues);
+            form.appendChild(hiddenInput);
+            form.submit(); // Proceed to next form
+        } else {
+            alert('Please select at least one response.');
+        }
+    });
+    </script>
+
+{% endblock content %}

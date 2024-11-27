@@ -607,5 +607,100 @@ def outcomes():
 
 @app.route('/logoutcomes')
 def logoutcomes():
+    sql = "select * from Outcome"
+    cursor.execute(sql)
+    outcomes= cursor.fetchall()
+    return render_template('LogOutcome.html', outcomes=outcomes)
+
+@app.route('/logoutcome', methods=['GET', 'POST'])
+def logoutcome():
+    if request.method == 'POST':
+            responseid = request.form.getlist('responseid[]')
+            outcomeid = request.form.get('outcomeid')
+            decision = request.form.get('decision')
+            name = request.form.get('name')
+            
+            error = False
+            if not responseid:
+                error = True
+                flash("Please provide a ResponseID!")
+            
+            
+            if not outcomeid:
+                error = True
+                flash("Please provide an OutcomeID!")
+
+            if not decision:
+                error = True
+                flash("Please provide a Decision!")
+
+            if not name:
+                error = True
+                flash("Please provide an Investigator Name!")
+
+            if not error:
+                
+           
+                sql = "INSERT INTO Outcome(ResponseID, OutcomeID, Decision, Investigator) VALUES (%s, %s, %s, %s)"
+                cursor.execute(sql, (responseid, outcomeid, decision, name)) 
+                
+                # cursor.execute("SELECT * FROM Products")
+                # products = cursor.fetchall()
+                dbConn.commit()                    
+                flash("Outcome has been logged!")
+                return render_template('ViolationResponses.html') 
+            else:
+                sql = "select * from Outcome"
+                cursor.execute(sql)
+                outcomes= cursor.fetchall()
+                return render_template('LogOutcome.html', outcomes=outcomes, responseid=responseid, outcomeid=outcomeid, decision=decision, name=name)
+    else:
+        sql = "select * from Outcome"
+        cursor.execute(sql)
+        outcomes= cursor.fetchall()
+        return render_template('LogOutcome.html', outcomes=outcomes, responseid=responseid, outcomeid=outcomeid, decision=decision, name=name)
+   
+                
+
+@app.route('/violationresponses')
+def violationresponses():
+    sql = "select * from Response"
+    cursor.execute(sql)
+    response= cursor.fetchall()
+    return render_template('ViolationResponses.html', response=response)
+
+@app.route('/next-logoutcome', methods=['POST'])
+def next_logoutcome():
+    selected_responses = request.form.get('selectedResponses')
+    responses = json.loads(selected_responses) if selected_responses else []
+
+    sql = "select * from Outcome"
+    cursor.execute(sql)
+    outcomes= cursor.fetchall()
+    return render_template('LogOutcome.html', responses=responses, outcomes=outcomes)
+
+
+
+
+
+        
     
-    return render_template('LogOutcome.html')
+@app.route('/letterssent')
+def letters_sent():
+    # SQL query to fetch data from the LettersSent table
+    sql = """
+        SELECT 
+            `LettersSent`.`LetterID`,
+            `LettersSent`.`LetterText`,
+            `LettersSent`.`LetterDateTime`,
+            `LettersSent`.`ViolationID`,
+            `LettersSent`.`SellerID`
+        FROM `CPSCProject`.`LettersSent`;
+    """
+    
+    # Execute the query
+    cursor.execute(sql)
+    letters = cursor.fetchall()
+
+    # Pass the fetched data to the template
+    return render_template('LettersSent.html', letters=letters)
