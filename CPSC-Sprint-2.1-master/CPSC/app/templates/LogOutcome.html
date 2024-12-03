@@ -5,8 +5,8 @@
 <div class="block-heading" style="position: relative; padding: 20px; left: 25%; text-align: left;">
   <h1 class="fw-bold mb-2">Log Outcome</h1>
   <div>
-    <a href="/welcome" style="color: black; text-decoration: none; margin-right: 10px;">All > </a>
-    <a href="/OutcomesTable" style="color: black; text-decoration: none; margin-right: 10px;">Manage Outcomes and Responses > </a>
+    <a href="/welcomeinvestigator" style="color: black; text-decoration: none; margin-right: 10px;">All > </a>
+    <a href="/violationresponses" style="color: black; text-decoration: none; margin-right: 10px;">Manage Outcomes and Responses > </a>
     <a href="/LogOutcome" class="fw-bold" style="color: black; text-decoration: none;">Log Outcome</a>
   </div>
 </div>
@@ -63,7 +63,7 @@
           style="border-radius: 5px; height: 40px; width: 200%; max-width: 450px; border-color: #222d64; margin-right: 10px;" placeholder="">
           <option value="" disabled selected hidden>Please select...</option>
           {% for x in outcomes %}
-            <option value="{{ x.Investigator }}">{{ x.Investigator }}</option>
+            <option value="{{ x.UserID }}">{{ x.Username }}</option>
           {% endfor %}
         </select>
     </div>

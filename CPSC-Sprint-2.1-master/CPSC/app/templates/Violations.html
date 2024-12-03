@@ -1,4 +1,3 @@
-
 {% extends "layouts/base2.html" %}
 
 {% block content %}
@@ -21,44 +20,38 @@
   </style>
 </head>
 
-
-    <div class="container">
-        <div class="block-heading d-flex justify-content-between align-items-center">
-            <div>
-                <h1 class="fw-bold mb-2" >Violation Table</h1>
-                <a href="/welcomeinvestigator" style="color: black; text-decoration: none;">All > </a>
-                <a href="/violations" class="fw-bold" style="color: black; text-decoration: none;">Violation Table</a>
-            </div>
-            <br>
-           
+<div class="container">
+    <div class="block-heading d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="fw-bold mb-2">Violation Table</h1>
+            <a href="/welcomeinvestigator" style="color: black; text-decoration: none;">All > </a>
+            <a href="/violations" class="fw-bold" style="color: black; text-decoration: none;">Violation Table</a>
         </div>
+        <br>
+    </div>
 
-        
-        <table class="table table-bordered">
-            <thead class="table-dark">
-                    <tr> 
-                        <th scope="col">Violation ID</th>
-                        <th scope="col">Violation Name</th>
-                        <th scope="col">Violation Found</th>
-                        <th scope="col">Violation Type</th>
-                        <th scope="col">User ID</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for x in violations %}
-                        <tr>
-                            <td>{{ x.ViolationID }}</td>
-                            <td>{{ x.ViolationName }}</td>
-                            <td>{{ x.ViolationFound }}</td>
-                            <td>{{ x.ViolationType }}</td>
-                            <td>{{ x.UserID }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-        </table>
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Violation ID</th>
+                <th scope="col">Violation Name</th>
+                <th scope="col">Violation Found</th>
+                <th scope="col">User ID</th>
+                <th scope="col">Status</th> <!-- Add the Status column header -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for x in violations %}
+                <tr>
+                    <td>{{ x.ViolationID }}</td>
+                    <td>{{ x.ViolationName }}</td>
+                    <td>{{ x.ViolationFound }}</td>
+                    <td>{{ x.UserID }}</td>
+                    <td>{{ x.Status }}</td> <!-- Add the Status column data -->
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
-    
-   
-        
-        
-    {% endblock content %}
+{% endblock content %}

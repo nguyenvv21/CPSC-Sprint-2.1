@@ -1,56 +1,85 @@
-{% extends "layouts/base2.html" %}
-
-{% block content %}
+{% extends "layouts/base2.html" %} {% block content %}
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
   <style>
-      .navbar-custom {
-          background-color: #222d64; /* Replace this with the blue color of your login page */
-          margin-top: 0;
-          padding-top: 0;
-      }
-      .navbar-custom .navbar-brand,
-      .navbar-custom .nav-link {
-          color: #fff;
-      }
+    .navbar-custom {
+      background-color: #222d64; /* Replace this with the blue color of your login page */
+      margin-top: 0;
+      padding-top: 0;
+    }
+    .navbar-custom .navbar-brand,
+    .navbar-custom .nav-link {
+      color: #fff;
+    }
   </style>
 </head>
 
 <div class="container">
-    <div class="block-heading d-flex justify-content-between align-items-center">
-        <div>
-            <h1 class="fw-bold mb-2">Letters Sent</h1>
-            <a href="/welcomeinvestigator" style="color: black; text-decoration: none;">All > </a>
-            <a href="/letterssent" class="fw-bold" style="color: black; text-decoration: none;">Manage Letters Sent</a>
-        </div>
-        <br>
+  <div class="block-heading d-flex justify-content-between align-items-center">
+    <div>
+      <h1 class="fw-bold mb-2">Seller Responses</h1>
+      <a href="/welcomeinvestigator" style="color: black; text-decoration: none"
+        >All >
+      </a>
+      <a
+        href="/violationresponses"
+        class="fw-bold"
+        style="color: black; text-decoration: none"
+        >Manage Outcomes and Responses</a
+      >
     </div>
 
-    <table class="table table-bordered">
-        <thead class="table-dark">
-            <tr>
-                <th scope="col">Letter ID</th>
-                <th scope="col">Letter Text</th>
-                <th scope="col">Date/Time Sent</th>
-                <th scope="col">Violation ID</th>
-                <th scope="col">Seller ID</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for letter in letters %}
-                <tr>
-                    <td>{{ letter.LetterID }}</td>
-                    <td>{{ letter.LetterText }}</td>
-                    <td>{{ letter.LetterDateTime }}</td>
-                    <td>{{ letter.ViolationID }}</td>
-                    <td>{{ letter.SellerID }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="d-flex align-items-center">
+      <div class="btn-group" role="group" aria-label="Default button group">
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          onclick="window.location.href='/violationresponses';">
+          Responses
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          onclick="window.location.href='/letterssent';">
+          Letters Sent
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          onclick="window.location.href = '/outcomes';">
+          Outcomes
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">Letter ID</th>
+        <th scope="col">Letter Text</th>
+        <th scope="col">Date/Time Sent</th>
+        <th scope="col">Violation ID</th>
+        <th scope="col">Seller ID</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for letter in letters %}
+      <tr>
+        <td>{{ letter.LetterID }}</td>
+        <td>{{ letter.LetterText }}</td>
+        <td>{{ letter.LetterDateTime }}</td>
+        <td>{{ letter.ViolationID }}</td>
+        <td>{{ letter.SellerID }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 
 {% endblock content %}

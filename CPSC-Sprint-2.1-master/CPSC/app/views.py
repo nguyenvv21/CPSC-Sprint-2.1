@@ -411,8 +411,8 @@ def addmarketlistings():
 
             listingID = cursor.lastrowid
 
-            sql = "insert into SellerInfo(SellerName, SellerContact, ListingID) values(%s, %s, %s)"
-            cursor.execute(sql, [sellername, selleremail, listingID])
+            sql = "insert into SellerInfo(SellerName, SellerContact) values(%s, %s)"
+            cursor.execute(sql, [sellername, selleremail])
             cursor.execute("SELECT * FROM MarketListings")
             listings = cursor.fetchall()
             dbConn.commit()
@@ -433,7 +433,18 @@ def addmarketlistings():
 
 @app.route('/violations')
 def violations():
-    sql = "select * from Violations"
+    sql = """
+        SELECT 
+            v.ViolationID, 
+            v.ViolationName, 
+            v.ViolationFound, 
+            v.UserID, 
+            ls.Status 
+        FROM 
+            Violations v
+        LEFT JOIN 
+            ListingStatus ls ON v.ListingID = ls.ListingID
+    """
     cursor.execute(sql)
     violations= cursor.fetchall()
     return render_template('Violations.html', violations=violations)
@@ -598,11 +609,13 @@ def process_update_status():
 
 @app.route('/outcomes')
 def outcomes():
-    sql = "SELECT ml.ListingID, ml.ListingName, ml.ListingURL, ml.ProductID, ml.ListingDateTime, ls.Status FROM MarketListings ml JOIN ListingStatus ls ON ml.ListingID = ls.ListingID"
-
+    
+    # sql = "SELECT u.Username FROM Users u JOIN Outcome o ON u.UserId = o.UserId;"
+    # sql = "select * from Outcome"
+    sql = "SELECT o.OutcomeID, u.Username, o.Decision, o.Rationale, o.ResponseID FROM Users u JOIN Outcome o ON u.UserId = o.UserId;"
     cursor.execute(sql)
-    listings = cursor.fetchall()
-    return render_template('OutcomesTable.html', listings=listings)
+    outcomes = cursor.fetchall()
+    return render_template('OutcomesTable.html', outcomes=outcomes)
 
 
 @app.route('/logoutcomes')
@@ -641,14 +654,16 @@ def logoutcome():
             if not error:
                 
            
-                sql = "INSERT INTO Outcome(ResponseID, OutcomeID, Decision, Investigator) VALUES (%s, %s, %s, %s)"
-                cursor.execute(sql, (responseid, outcomeid, decision, name)) 
+                # sql = "INSERT INTO Outcome(ResponseID, OutcomeID, Decision, Investigator) VALUES (%s, %s, %s, %s)"
+                sql = "UPDATE Outcome SET ResponseID = %s, Decision = %s, Investigator = %s WHERE OutcomeID = %s"
+        
+                cursor.execute(sql, [responseid, decision,  name, outcomeid ]) 
                 
-                # cursor.execute("SELECT * FROM Products")
-                # products = cursor.fetchall()
+                cursor.execute("SELECT * FROM Response")
+                response = cursor.fetchall()
                 dbConn.commit()                    
                 flash("Outcome has been logged!")
-                return render_template('ViolationResponses.html') 
+                return render_template('ViolationResponses.html', response=response) 
             else:
                 sql = "select * from Outcome"
                 cursor.execute(sql)
@@ -674,7 +689,8 @@ def next_logoutcome():
     selected_responses = request.form.get('selectedResponses')
     responses = json.loads(selected_responses) if selected_responses else []
 
-    sql = "select * from Outcome"
+    # sql = "select * from Outcome"
+    sql = "SELECT o.OutcomeID, u.Username, o.Decision, o.Rationale, o.ResponseID FROM Users u JOIN Outcome o ON u.UserId = o.UserId;"
     cursor.execute(sql)
     outcomes= cursor.fetchall()
     return render_template('LogOutcome.html', responses=responses, outcomes=outcomes)
