@@ -621,7 +621,7 @@ def outcomes():
 @app.route('/logoutcomes')
 def logoutcomes():
     # sql = "select * from Outcome"
-    sql="SELECT o.OutcomeID, u.Username, o.Decision, o.ResponseID FROM Users u JOIN Outcome o ON u.UserId = o.UserId;"
+    sql="SELECT o.OutcomeID, u.Username, o.Decision, o.Rationale, o.ResponseID, o.UserID FROM Users u JOIN Outcome o ON u.UserId = o.UserId;"
     cursor.execute(sql)
     outcomes= cursor.fetchall()
     return render_template('LogOutcome.html', outcomes=outcomes)
@@ -629,58 +629,77 @@ def logoutcomes():
 @app.route('/logoutcome', methods=['GET', 'POST'])
 def logoutcome():
     if request.method == 'POST':
-            responseid = request.form.getlist('responseid[]')
-            outcomeid = request.form.get('outcomeid')
-            decision = request.form.get('decision')
-            name = request.form.get('name')
-            
-            error = False
-            if not responseid:
-                error = True
-                flash("Please provide a ResponseID!")
-            
-            
-            if not outcomeid:
-                error = True
-                flash("Please provide an OutcomeID!")
+        responseid = request.form.getlist('responseid[]')
+        responseid_selected = responseid[0] if responseid else None
+        outcomeid = request.form.get('outcomeid')
+        decision = request.form.get('decision')
+        name = request.form.get('name')
 
-            if not decision:
-                error = True
-                flash("Please provide a Decision!")
+        error = False
 
-            if not name:
-                error = True
-                flash("Please provide an Investigator Name!")
+        # Validate inputs
+        if not responseid_selected:
+            error = True
+            flash("Please provide a ResponseID!")
 
-            if not error:
-                
-           
-                # sql = "INSERT INTO Outcome(ResponseID, OutcomeID, Decision, Investigator) VALUES (%s, %s, %s, %s)"
-                sql = "UPDATE Outcome SET ResponseID = %s, Decision = %s, UserID = %s WHERE OutcomeID = %s"
-        
-                cursor.execute(sql, [responseid, decision,  name, outcomeid ]) 
-                
-                cursor.execute("SELECT * FROM Response")
-                response = cursor.fetchall()
-                dbConn.commit()                    
-                flash("Outcome has been logged!")
-                return render_template('ViolationResponses.html', response=response) 
-            else:
-                # sql = "select * from Outcome"
-                sql = "SELECT o.OutcomeID, u.Username, o.Decision, o.ResponseID FROM Users u JOIN Outcome o ON u.UserId = o.UserId;"
-                cursor.execute(sql)
-                outcomes= cursor.fetchall()
-                return render_template('LogOutcome.html', outcomes=outcomes, responseid=responseid, outcomeid=outcomeid, decision=decision, name=name)
-                # print(f"Received name: {name}")
-                # return render_template('Login.html')
-    else:
-        # sql = "select * from Outcome"
-        sql = "SELECT o.OutcomeID, u.Username, o.Decision, o.ResponseID FROM Users u JOIN Outcome o ON u.UserId = o.UserId;"
+        if not outcomeid:
+            error = True
+            flash("Please provide an OutcomeID!")
+
+        if not decision:
+            error = True
+            flash("Please provide a Decision!")
+
+        if not name:
+            error = True
+            flash("Please provide an Investigator Name!")
+
+        # Check database constraints
+        if not error:
+            user_check_sql = "SELECT UserID FROM Users WHERE Username = %s"
+            cursor.execute(user_check_sql, [name])
+            user = cursor.fetchone()
+            if not user:
+                error = True
+                flash(f"User with username '{name}' does not exist!")
+
+            outcome_check_sql = "SELECT * FROM Outcome WHERE OutcomeID = %s"
+            cursor.execute(outcome_check_sql, [outcomeid])
+            outcome = cursor.fetchone()
+            if not outcome:
+                error = True
+                flash(f"OutcomeID '{outcomeid}' does not exist!")
+
+            response_check_sql = "SELECT * FROM Response WHERE ResponseID = %s"
+            cursor.execute(response_check_sql, [responseid_selected])
+            response = cursor.fetchone()
+            if not response:
+                error = True
+                flash(f"ResponseID '{responseid_selected}' does not exist!")
+
+        if not error:
+            sql = """
+            UPDATE Outcome 
+            SET ResponseID = %s, Decision = %s, UserID = (SELECT UserID FROM Users WHERE Username = %s)
+            WHERE OutcomeID = %s
+            """
+            cursor.execute(sql, [responseid_selected, decision, name, outcomeid])
+            dbConn.commit()
+            flash("Outcome has been logged!")
+            return redirect('/violationresponses')
+
+        # Reload form with errors
+        sql = "SELECT o.OutcomeID, u.Username, o.Decision, o.Rationale, o.ResponseID, o.UserID FROM Users u JOIN Outcome o ON u.UserId = o.UserId;"
         cursor.execute(sql)
-        outcomes= cursor.fetchall()
-        return render_template('LogOutcome.html', outcomes=outcomes, responseid=responseid, outcomeid=outcomeid, decision=decision, name=name)
-   
-   
+        outcomes = cursor.fetchall()
+        return render_template('LogOutcome.html', outcomes=outcomes, responseid=responseid_selected, outcomeid=outcomeid, decision=decision, name=name)
+    else:
+        # Load outcomes for GET request
+        sql = "SELECT o.OutcomeID, u.Username, o.Decision, o.Rationale, o.ResponseID, o.UserID FROM Users u JOIN Outcome o ON u.UserId = o.UserId;"
+        cursor.execute(sql)
+        outcomes = cursor.fetchall()
+        return render_template('LogOutcome.html', outcomes=outcomes, responseid=None, outcomeid=None, decision=None, name=None)
+
 
 @app.route('/violationresponses')
 def violationresponses():
