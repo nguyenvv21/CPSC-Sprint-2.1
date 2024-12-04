@@ -384,6 +384,9 @@ def addmarketlistings():
     sellername = request.form.get('sellername')
     selleremail = request.form.get('selleremail')
     listingID = request.form.get('listingID')
+    units_sold = request.form.get('units_sold')
+    product_id = request.form.get('product_id')
+    seller_id = request.form.get('seller_id')
     #input validation
     error = False
 
@@ -406,8 +409,8 @@ def addmarketlistings():
     if not error:
         
         if not listingID:
-            sql = "insert into MarketListings(ListingName, ListingURL, ListingDateTime) values(%s, %s, %s)"
-            cursor.execute(sql, [marketlistingname, url, marketlistingdate])
+            sql = "insert into MarketListings(ListingName, ListingURL, ListingDateTime, UnitsSold, ProductID, SellerID) values(%s, %s, %s, %s, %s, %s)"
+            cursor.execute(sql, [marketlistingname, url, marketlistingdate, units_sold, product_id, seller_id])
 
             listingID = cursor.lastrowid
 
