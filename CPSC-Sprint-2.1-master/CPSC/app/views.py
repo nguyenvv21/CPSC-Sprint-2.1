@@ -612,7 +612,7 @@ def outcomes():
     
     # sql = "SELECT u.Username FROM Users u JOIN Outcome o ON u.UserId = o.UserId;"
     # sql = "select * from Outcome"
-    sql = "SELECT o.OutcomeID, u.Username, o.Decision, o.Rationale, o.ResponseID FROM Users u JOIN Outcome o ON u.UserId = o.UserId;"
+    sql = "SELECT o.OutcomeID, u.Username, o.Decision, o.Rationale, o.ResponseID, o.UserID FROM Users u JOIN Outcome o ON u.UserId = o.UserId;"
     cursor.execute(sql)
     outcomes = cursor.fetchall()
     return render_template('OutcomesTable.html', outcomes=outcomes)
@@ -620,7 +620,8 @@ def outcomes():
 
 @app.route('/logoutcomes')
 def logoutcomes():
-    sql = "select * from Outcome"
+    # sql = "select * from Outcome"
+    sql="SELECT o.OutcomeID, u.Username, o.Decision, o.ResponseID FROM Users u JOIN Outcome o ON u.UserId = o.UserId;"
     cursor.execute(sql)
     outcomes= cursor.fetchall()
     return render_template('LogOutcome.html', outcomes=outcomes)
@@ -655,7 +656,7 @@ def logoutcome():
                 
            
                 # sql = "INSERT INTO Outcome(ResponseID, OutcomeID, Decision, Investigator) VALUES (%s, %s, %s, %s)"
-                sql = "UPDATE Outcome SET ResponseID = %s, Decision = %s, Investigator = %s WHERE OutcomeID = %s"
+                sql = "UPDATE Outcome SET ResponseID = %s, Decision = %s, UserID = %s WHERE OutcomeID = %s"
         
                 cursor.execute(sql, [responseid, decision,  name, outcomeid ]) 
                 
@@ -665,17 +666,21 @@ def logoutcome():
                 flash("Outcome has been logged!")
                 return render_template('ViolationResponses.html', response=response) 
             else:
-                sql = "select * from Outcome"
+                # sql = "select * from Outcome"
+                sql = "SELECT o.OutcomeID, u.Username, o.Decision, o.ResponseID FROM Users u JOIN Outcome o ON u.UserId = o.UserId;"
                 cursor.execute(sql)
                 outcomes= cursor.fetchall()
                 return render_template('LogOutcome.html', outcomes=outcomes, responseid=responseid, outcomeid=outcomeid, decision=decision, name=name)
+                # print(f"Received name: {name}")
+                # return render_template('Login.html')
     else:
-        sql = "select * from Outcome"
+        # sql = "select * from Outcome"
+        sql = "SELECT o.OutcomeID, u.Username, o.Decision, o.ResponseID FROM Users u JOIN Outcome o ON u.UserId = o.UserId;"
         cursor.execute(sql)
         outcomes= cursor.fetchall()
         return render_template('LogOutcome.html', outcomes=outcomes, responseid=responseid, outcomeid=outcomeid, decision=decision, name=name)
    
-                
+   
 
 @app.route('/violationresponses')
 def violationresponses():
