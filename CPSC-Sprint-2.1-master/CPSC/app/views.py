@@ -502,10 +502,14 @@ def addviolations():
 
                 listingID = cursor.lastrowid
                 #seller table
-                sql = "insert into SellerInfo(SellerName, SellerContact, ListingID) values(%s, %s, %s)"
-                cursor.execute(sql, [sellername, selleremail, listingID])
+                sql = "insert into SellerInfo(SellerName, SellerContact) values(%s, %s)"
+                cursor.execute(sql, [sellername, selleremail])
+
+                # sql = "insert into SellerInfo(SellerName, SellerContact, ListingID) values(%s, %s, %s)"
+                # cursor.execute(sql, [sellername, selleremail, listingID])
+
                 #violations table
-                sql = "insert into Violations(ViolationName, ViolationFound, ListingID) values(%s, %s, %s, %s)"
+                sql = "insert into Violations(ViolationName, ViolationFound, ListingID) values(%s, %s, %s)"
                 cursor.execute(sql, [marketlistingname,marketlistingdate , listingID])
 
                 cursor.execute("SELECT * FROM MarketListings")
@@ -515,8 +519,8 @@ def addviolations():
             else:
                 sql = "update MarketListings set ListingName=%s, ListingURL=%s, ListingDateTime=%s where ListingID=%s "
                 cursor.execute(sql, [marketlistingname, url,marketlistingdate, listingID])
-                sql = "insert into SellerInfo(SellerName, SellerContact, ListingID) values(%s, %s, %s)"
-                cursor.execute(sql, [sellername, selleremail, listingID])
+                sql = "insert into SellerInfo(SellerName, SellerContact) values(%s, %s)"
+                cursor.execute(sql, [sellername, selleremail])
                 cursor.execute("SELECT * FROM MarketListings")
                 listings = cursor.fetchall()
                 dbConn.commit()
